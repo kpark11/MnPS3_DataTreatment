@@ -46,10 +46,11 @@ i = 0
 
 
 for k in range(len(list)):
-    if fnmatch.fnmatch(list[k],'*python*'):
-
+    if fnmatch.fnmatch(list[k],'*fit_result*'):
+        pass
+    if fnmatch.fnmatch(list[k],'python*'):
         filename = list[k]        
-        pd_data = pd.read_csv(list[k])
+        pd_data = pd.read_csv(filename)
         np_data = pd_data.to_numpy()        
         b1y = np_data[68,5]
         b1x = np_data[68,2]
@@ -114,7 +115,8 @@ for k in range(len(list)):
         
         Temperature_params[i][0] = item
         
-        
+        integration = np.sum(corrected_data[:,3])
+        Temperature_params[i][8] = integration
         
         #Temperature = np.append(Temperature,Temperature_amplitude)
         #np.savetxt('PeakFit_data' + list[k],result.data)
@@ -132,6 +134,26 @@ for k in range(len(list)):
         
         plt.show()
         
+fig_temp = plt.figure()
+ax3 = fig_temp.add_subplot(1,1,1)
+ax3.scatter(Temperature_params[:,0],Temperature_params[:,1],s=200)
+ax3.set_title('MnPS3')
+ax3.set_xlabel('Temperature (K)')
+ax3.set_ylabel('Amplitude')
 
+fig_temp1 = plt.figure()
+ax4 = fig_temp1.add_subplot(1,1,1)
+ax4.scatter(Temperature_params[:,0],Temperature_params[:,2],s=200)
+ax4.set_title('MnPS3')
+ax4.set_xlabel('Temperature (K)')
+ax4.set_ylabel('Center (cm-1)')
+
+
+fig_temp1 = plt.figure()
+ax5 = fig_temp1.add_subplot(1,1,1)
+ax5.scatter(Temperature_params[:,0],Temperature_params[:,8],s=200)
+ax5.set_title('MnPS3')
+ax5.set_xlabel('Temperature (K)')
+ax5.set_ylabel('Oscillator strength')
 #np.savetxt('params.txt',Temperature_params)
 
